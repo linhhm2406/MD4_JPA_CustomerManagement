@@ -11,11 +11,23 @@ public class Customer {
     private String firstName;
     private String lastName;
 
+    @ManyToOne (targetEntity = Province.class)
+    @JoinColumn(name = "province_id")
+    private Province province;
+
     public Customer(){}
+
 
     public Customer(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    public Customer(Long id, String firstName, String lastName, Province province) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.province = province;
     }
 
     @Override
@@ -45,5 +57,13 @@ public class Customer {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Province getProvince() {
+        return province;
+    }
+
+    public void setProvince(Province province) {
+        this.province = province;
     }
 }

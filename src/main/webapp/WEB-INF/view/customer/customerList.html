@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head >
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <div th:fragment="header">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    </div>
+</head>
+<br>
+<body>
+<div class="container-fluid">
+    <h1>Customer List</h1>
+    <a class="btn btn-outline-primary" th:href="@{/customer/create}">Create New Customer</a>
+    <form>
+        Search by first name:
+        <input name="s" type="text"/>
+        <input type="submit" value="Search"/>
+    </form><br/>
+    <br>
+    <th:block th:object="${list}">
+        <table class="table table-hover">
+            <tr>
+                <td>ID</td>
+                <td>First Name</td>
+                <td>Last Name</td>
+                <td>Province</td>
+                <td colspan="2">Action</td>
+            </tr>
+            <tr th:each="customer : ${list}">
+                <td th:text="${customer.id}"></td>
+                <td th:text="${customer.firstName}"></td>
+                <td th:text="${customer.lastName}"></td>
+                <td th:text="${customer.province.name}"></td>
+                <td><a class="btn btn-outline-success" th:href="@{customer/edit/__${customer.id}__}">Edit</a></td>
+                <td><a class="btn btn-outline-danger" th:href="@{customer/delete/__${customer.id}__}">Delete</a></td>
+            </tr>
+        </table>
+        <div>
+            <a th:href="@{'/customer'(page=${list.number - 1})}" th:if="${list.hasPrevious()}">Previous</a>
+            <span th:text="${list.number + 1}"></span>/<span th:text="${list.totalPages}"></span>
+            <a th:href="@{'/customer'(page=${list.number + 1})}" th:if="${list.hasNext()}">Next</a>
+        </div>
+    </th:block>
+
+</div>
+
+</body>
+<style>
+    table, th, tr, td {
+        border-collapse: collapse;
+        border: 1px solid black;
+    }
+    th, td{
+        width: 120px;
+        text-align: center;
+    }
+</style>
+</html>

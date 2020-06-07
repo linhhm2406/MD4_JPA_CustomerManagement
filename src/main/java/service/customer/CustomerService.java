@@ -2,10 +2,10 @@ package service.customer;
 
 import model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import repository.ICustomerRepository;
-
-import java.util.List;
 
 @Service
 public class CustomerService implements ICustomerService {
@@ -15,8 +15,8 @@ public class CustomerService implements ICustomerService {
 
 
     @Override
-    public List<Customer> findAll() {
-        return customerRepository.findAll();
+    public Page<Customer> findAll(Pageable pageable) {
+        return customerRepository.findAll(pageable);
     }
 
     @Override
@@ -32,5 +32,10 @@ public class CustomerService implements ICustomerService {
     @Override
     public void delete(Long id) {
         customerRepository.delete(id);
+    }
+
+    @Override
+    public Page<Customer> findAllByFirstNameContaining(String firstName, Pageable pageable) {
+        return customerRepository.findAllByFirstNameContaining(firstName, pageable);
     }
 }
