@@ -4,6 +4,7 @@ import jdk.nashorn.internal.runtime.options.Option;
 import model.Customer;
 import model.Province;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import service.customer.ICustomerService;
 import service.province.IProvinceService;
 
+import java.util.Locale;
 import java.util.Optional;
 
 @Controller
@@ -25,6 +27,8 @@ public class CustomerController {
     public ICustomerService customerService;
     @Autowired
     public IProvinceService provinceService;
+    @Autowired
+    MessageSource messageSource;
 
     @ModelAttribute("provinces")
     public Page<Province> provinces(Pageable pageable) {
@@ -32,7 +36,9 @@ public class CustomerController {
     }
 
     @GetMapping("customer")
-    public ModelAndView showAllList(@PageableDefault(value = 5) Pageable pageable, @RequestParam("s") Optional<String> s) {
+    public ModelAndView showAllList(@PageableDefault(value = 5) Pageable pageable, @RequestParam("s") Optional<String> s, Locale locale) {
+        String m = messageSource.getMessage("table.id", null, locale);
+        System.out.println(m);
         Page<Customer> list;
         if (s.isPresent()) {
             list = customerService.findAllByFirstNameContaining(s.get(), pageable);
